@@ -1,0 +1,10 @@
+dist
+.jest
+src/ui/assets/*
+yarn.lock
+.gitignore
+.gitattributes
+.eslintignore
+coverage
+*.md
+tsconfig.json
