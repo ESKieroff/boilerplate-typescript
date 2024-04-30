@@ -12,7 +12,11 @@
     "check-format": "prettier --check .",
     "format": "prettier --write .",
     "typecheck": "tsc --project tsconfig.json",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "vitest",
+    "start:ts": "tsx src/index.ts",
+    "start:dev": "tsx watch src/index.ts",
+    "build:ts": "tsup src"
   },
   "husky": {
     "hooks": {

@@ -1,0 +1,9 @@
+FROM postgres:15.4
+
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD postgres
+ENV POSTGRES_DB ERP
+
+COPY ./up_create_db.sql /docker-entrypoint-up_create_db.d/
+
+COPY ./up_insert_db.sql /docker-entrypoint-up_insert_db.d/

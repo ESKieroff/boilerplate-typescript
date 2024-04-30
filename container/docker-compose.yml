@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db_erp:
+    image: postgres:alpine
+    ports:
+      - "5435:5432/tcp"
+    container_name: "db_erp"
+    restart: always
+    volumes:
+      - ./db_erp:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ERP
+
+volumes:
+  db_erp:
