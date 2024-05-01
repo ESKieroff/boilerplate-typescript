@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,75 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique @db.VarChar(255)
+  email      String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  first_name String?  @db.VarChar(255)
+  last_name  String?  @db.VarChar(255)
+  country    Country?
+  user_type  UserType @default(PUBLIC)
+  active     Boolean  @default(true)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(6)
+  profile    Profile? @relation("userProfile")
+
+  @@map("users")
+}
+
+model Profile {
+  id                  Int       @id
+  photo               Bytes?
+  biography           String?
+  tittle              String?   @db.VarChar(255)
+  description         String?
+  birth               DateTime? @db.Timestamp(6)
+  phone               String?   @db.VarChar(255)
+  profile_description String?
+  profile_status      String?   @db.VarChar(255)
+  social_network      Json?
+  interests           Json?
+  preferences         Json?
+  configurations      Json?
+  gender              Gender?
+  language            Language?
+  created_at          DateTime  @default(now()) @db.Timestamp(6)
+  updated_at          DateTime  @default(now()) @db.Timestamp(6)
+  user                User      @relation("userProfile", fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("profiles")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserType {
+  ERP
+  PUBLIC
+  API
+  SYSTEM
+  ANONYMOUS
+  ROOT
+  ADMIN
+}
+
+enum Country {
+  BRAZIL
+  UNITED_STATES
+  GERMANY
+  CHINA
+}
+
+enum Language {
+  EN_US
+  PT_BR
+  PT_PT
+  ZH_CN
+  ES
 }

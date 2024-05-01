@@ -1,18 +1,24 @@
-version: '3'
+version: "3"
 
 services:
-  db_erp:
+  database:
     image: postgres:alpine
-    ports:
-      - "5435:5432/tcp"
-    container_name: "db_erp"
-    restart: always
-    volumes:
-      - ./db_erp:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ERP
-
+      POSTGRES_DB: srvwebdb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./db_create.sql:/docker-entrypoint-initdb.d/db_create.sql
+      - ./db_insert.sql:/docker-entrypoint-initdb.d/db_insert.sql
 volumes:
-  db_erp:
+  dbdata:
+  dbconfig:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "../database"
