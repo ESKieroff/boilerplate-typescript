@@ -12,10 +12,6 @@ if [ "$confirmation" != "yes" ]; then
   exit 0
 fi
 
-# force answer "yes" for all questions after
-yes | docker image prune -a
-yes | docker network prune
-
 # stop all conteiners running
 docker stop $(docker ps -q)
 
@@ -23,19 +19,19 @@ docker stop $(docker ps -q)
 docker rm $(docker ps -aq)
 
 # remove all images not utilized and no tags
-docker image prune -a -f
+yes | docker image prune -a -f
 
 # remove all volumes not utilized (dangling)
 docker volume rm $(docker volume ls -qf dangling=true)
 
 # remove all networks
-docker network prune
+yes | docker network prune
 
 # display information about space on disc
 docker system df
 
 # clean the cache of building Docker
-docker builder prune
+yes | docker builder prune
 
 # clean the terminal
 clear
