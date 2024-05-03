@@ -14,16 +14,16 @@ if [ "$confirmation" != "yes" ]; then
 fi
 
 # build image from PostgreSQL
-docker build -t postgres-db-reach -f dockerfile.postgres .
+docker build -t postgres-db-ripley -f dockerfile.postgres .
 
 # build image from backend Node.js
-docker build -t backend-reach -f dockerfile.node .
+docker build -t backend-ripley -f dockerfile.node .
 
 # Execute container PostgreSQL
-docker run -d --name reach_db postgres-db-reach
+docker run -d --name ripley_db postgres-db-ripley
 
 # Execute container backend Node.js
-docker run -d --name back backend-reach
+docker run -d --name back backend-ripley
 
 # clean the terminal
 clear
