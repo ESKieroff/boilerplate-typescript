@@ -1,24 +1,50 @@
 version: "3"
 
 services:
-  database:
-    image: postgres:alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: srvwebdb
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile.node
+    env_file:
+      - .env
     restart: always
     ports:
-      - "5432:5432"
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    expose:
+      - "3000"
+    stdin_open: true
+    tty: true
     volumes:
-      - dbdata:/var/lib/postgresql/data
-      - ./db_create.sql:/docker-entrypoint-initdb.d/db_create.sql
-      - ./db_insert.sql:/docker-entrypoint-initdb.d/db_insert.sql
+      - .:/app/
+      - .:/app/node_modules
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - database
+  database:
+    build:
+      context: .
+      dockerfile: dockerfile.postgres
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - ${DB_PORT}:${POSTGRES_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgpersistencedata:/var/lib/postgresql/data
+      - ./scripts/db_create.sql:/docker-entrypoint-initdb.d/db_create.sql
+      - ./scripts/db_insert.sql:/docker-entrypoint-initdb.d/db_insert.sql
 volumes:
-  dbdata:
+  pgpersistencedata:
   dbconfig:
     driver: local
     driver_opts:
       type: "none"
       o: "bind"
-      device: "../database"
+      device: "./database"
