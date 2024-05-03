@@ -1,6 +1,15 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,visualstudiocode
 
+## CUSTOM ##
+
+
+
+
+
+
+
+
 ### Node ###
 # Logs
 logs
@@ -59,7 +68,7 @@ web_modules/
 .eslintcache
 
 # Optional editorconfig
-#.editorconfig
+.editorconfig
 
 # Optional stylelint cache
 .stylelintcache
@@ -80,7 +89,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-#.env
+.env
 # .env.development.local
 # .env.test.local
 # .env.production.local
